@@ -5,15 +5,14 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"github.com/go-logr/logr"
 	"net"
 	"sync"
 	"sync/atomic"
 
-	"log/slog"
-
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 	"github.com/jackc/pgtype"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
 )
 
 // ListenAndServe opens a new Postgres server using the given address and
@@ -33,7 +32,7 @@ func ListenAndServe(address string, handler ParseFn) error {
 func NewServer(parse ParseFn, options ...OptionFn) (*Server, error) {
 	srv := &Server{
 		parse:      parse,
-		logger:     slog.Default(),
+		logger:     klog.NewKlogr(),
 		closer:     make(chan struct{}),
 		types:      pgtype.NewConnInfo(),
 		Statements: &DefaultStatementCache{},
@@ -55,7 +54,7 @@ func NewServer(parse ParseFn, options ...OptionFn) (*Server, error) {
 type Server struct {
 	closing         atomic.Bool
 	wg              sync.WaitGroup
-	logger          *slog.Logger
+	logger          logr.Logger
 	types           *pgtype.ConnInfo
 	Auth            AuthStrategy
 	BufferedMsgSize int
@@ -89,9 +88,9 @@ func (srv *Server) ListenAndServe(address string) error {
 // server is gracefully closed.
 func (srv *Server) Serve(listener net.Listener) error {
 	defer listener.Close()
-	defer srv.logger.Info("closing server")
+	defer klog.Info("closing server")
 
-	srv.logger.Info("serving incoming connections", slog.String("addr", listener.Addr().String()))
+	klog.V(9).Info("serving incoming connections", "addr", listener.Addr().String())
 
 	srv.wg.Add(1)
 
@@ -102,7 +101,7 @@ func (srv *Server) Serve(listener net.Listener) error {
 
 		err := listener.Close()
 		if err != nil {
-			srv.logger.Error("unexpected error while attempting to close the net listener", "err", err)
+			klog.Error("unexpected error while attempting to close the net listener", "err", err)
 		}
 	}()
 
@@ -116,7 +115,7 @@ func (srv *Server) Serve(listener net.Listener) error {
 			ctx := context.Background()
 			err = srv.serve(ctx, conn)
 			if err != nil {
-				srv.logger.Error("an unexpected error got returned while serving a client connectio", "err", err)
+				klog.Error("an unexpected error got returned while serving a client connectio", "err", err)
 			}
 		}()
 	}
@@ -126,7 +125,7 @@ func (srv *Server) serve(ctx context.Context, conn net.Conn) error {
 	ctx = setTypeInfo(ctx, srv.types)
 	defer conn.Close()
 
-	srv.logger.Debug("serving a new client connection")
+	klog.Info("serving a new client connection")
 
 	conn, version, reader, err := srv.Handshake(conn)
 	if err != nil {
@@ -137,9 +136,9 @@ func (srv *Server) serve(ctx context.Context, conn net.Conn) error {
 		return conn.Close()
 	}
 
-	srv.logger.Debug("handshake successfull, validating authentication")
+	klog.Info("handshake successfull, validating authentication")
 
-	writer := buffer.NewWriter(srv.logger, conn)
+	writer := buffer.NewWriter(klog.Background(), conn)
 	ctx, err = srv.readClientParameters(ctx, reader)
 	if err != nil {
 		return err
@@ -150,7 +149,7 @@ func (srv *Server) serve(ctx context.Context, conn net.Conn) error {
 		return err
 	}
 
-	srv.logger.Debug("connection authenticated, writing server parameters")
+	klog.Info("connection authenticated, writing server parameters")
 
 	ctx, err = srv.writeParameters(ctx, writer, srv.Parameters)
 	if err != nil {

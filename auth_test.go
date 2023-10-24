@@ -7,9 +7,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
-	"github.com/neilotoole/slogt"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,14 +17,14 @@ func TestDefaultHandleAuth(t *testing.T) {
 	sink := bytes.NewBuffer([]byte{})
 
 	ctx := context.Background()
-	reader := buffer.NewReader(slogt.New(t), input, buffer.DefaultBufferSize)
-	writer := buffer.NewWriter(slogt.New(t), sink)
+	reader := buffer.NewReader(klog.NewKlogr(), input, buffer.DefaultBufferSize)
+	writer := buffer.NewWriter(klog.NewKlogr(), sink)
 
-	server := &Server{logger: slogt.New(t)}
+	server := &Server{logger: klog.NewKlogr()}
 	_, err := server.handleAuth(ctx, reader, writer)
 	require.NoError(t, err)
 
-	result := buffer.NewReader(slogt.New(t), sink, buffer.DefaultBufferSize)
+	result := buffer.NewReader(klog.NewKlogr(), sink, buffer.DefaultBufferSize)
 	ty, ln, err := result.ReadTypedMsg()
 	require.NoError(t, err)
 
@@ -49,7 +48,7 @@ func TestClearTextPassword(t *testing.T) {
 	expected := "password"
 
 	input := bytes.NewBuffer([]byte{})
-	incoming := buffer.NewWriter(slogt.New(t), input)
+	incoming := buffer.NewWriter(klog.NewKlogr(), input)
 
 	// NOTE: we could reuse the server buffered writer to write client messages
 	incoming.Start(types.ServerMessage(types.ClientPassword))
@@ -68,10 +67,10 @@ func TestClearTextPassword(t *testing.T) {
 	sink := bytes.NewBuffer([]byte{})
 
 	ctx := context.Background()
-	reader := buffer.NewReader(slogt.New(t), input, buffer.DefaultBufferSize)
-	writer := buffer.NewWriter(slogt.New(t), sink)
+	reader := buffer.NewReader(klog.NewKlogr(), input, buffer.DefaultBufferSize)
+	writer := buffer.NewWriter(klog.NewKlogr(), sink)
 
-	server := &Server{logger: slogt.New(t), Auth: ClearTextPassword(validate)}
+	server := &Server{logger: klog.NewKlogr(), Auth: ClearTextPassword(validate)}
 	out, err := server.handleAuth(ctx, reader, writer)
 	require.NoError(t, err)
 	require.Equal(t, ctx, out)

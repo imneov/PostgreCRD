@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 	"github.com/lib/pq/oid"
 )
 

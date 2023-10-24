@@ -8,12 +8,11 @@ import (
 	"math"
 	"testing"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
-	"github.com/neilotoole/slogt"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 func TestNewReaderNil(t *testing.T) {
-	reader := NewReader(slogt.New(t), nil, 0)
+	reader := NewReader(klog.NewKlogr(), nil, 0)
 	if reader != nil {
 		t.Fatalf("unexpected result, expected reader to be nil %+v", reader)
 	}
@@ -32,7 +31,7 @@ func TestReadTypedMsg(t *testing.T) {
 	buffer.Write(size)
 	buffer.Write(_text)
 
-	reader := NewReader(slogt.New(t), buffer, DefaultBufferSize)
+	reader := NewReader(klog.NewKlogr(), buffer, DefaultBufferSize)
 
 	ty, ln, err := reader.ReadTypedMsg()
 	if err != nil {
@@ -58,7 +57,7 @@ func TestReadUntypedMsg(t *testing.T) {
 	buffer.Write(size)
 	buffer.Write(_text)
 
-	reader := NewReader(slogt.New(t), buffer, DefaultBufferSize)
+	reader := NewReader(klog.NewKlogr(), buffer, DefaultBufferSize)
 
 	ln, err := reader.ReadUntypedMsg()
 	if err != nil {
@@ -90,7 +89,7 @@ func TestReadUntypedMsgParameters(t *testing.T) {
 	buffer := msg.Bytes()
 	binary.BigEndian.PutUint32(buffer, uint32(msg.Len()))
 
-	reader := NewReader(slogt.New(t), bytes.NewReader(buffer), DefaultBufferSize)
+	reader := NewReader(klog.NewKlogr(), bytes.NewReader(buffer), DefaultBufferSize)
 	ln, err := reader.ReadUntypedMsg()
 	if err != nil {
 		t.Fatal(err)

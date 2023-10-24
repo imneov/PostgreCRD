@@ -2,10 +2,10 @@ package wire
 
 import (
 	"context"
+	"k8s.io/klog/v2"
 	"testing"
 
 	"github.com/lib/pq/oid"
-	"github.com/neilotoole/slogt"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,7 +35,7 @@ func TestParseParameters(t *testing.T) {
 }
 
 func TestNilSessionHandler(t *testing.T) {
-	srv, err := NewServer(nil, Logger(slogt.New(t)))
+	srv, err := NewServer(nil, Logger(klog.NewKlogr()))
 	assert.NoError(t, err)
 	assert.NotNil(t, srv)
 
@@ -72,7 +72,7 @@ func TestSessionHandler(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			test = append(test, Logger(slogt.New(t)))
+			test = append(test, Logger(klog.NewKlogr()))
 			srv, err := NewServer(nil, test...)
 			assert.NoError(t, err)
 			assert.NotNil(t, srv)

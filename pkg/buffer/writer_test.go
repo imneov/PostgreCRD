@@ -6,17 +6,16 @@ import (
 	"math"
 	"testing"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
-	"github.com/neilotoole/slogt"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 func TestNewWriterNil(t *testing.T) {
-	NewWriter(slogt.New(t), nil)
+	NewWriter(klog.NewKlogr(), nil)
 }
 
 func TestWriteMsg(t *testing.T) {
 	buffer := bytes.NewBuffer([]byte{})
-	writer := NewWriter(slogt.New(t), buffer)
+	writer := NewWriter(klog.NewKlogr(), buffer)
 
 	writer.Start(types.ServerDataRow)
 	writer.AddString("John Doe")
@@ -39,7 +38,7 @@ func TestWriteMsgErr(t *testing.T) {
 	expected := errors.New("unexpected error")
 
 	buffer := bytes.NewBuffer([]byte{})
-	writer := NewWriter(slogt.New(t), buffer)
+	writer := NewWriter(klog.NewKlogr(), buffer)
 
 	writer.Start(types.ServerDataRow)
 	writer.err = expected
@@ -62,7 +61,7 @@ func TestWriteMsgErr(t *testing.T) {
 
 func TestWriteTypes(t *testing.T) {
 	buffer := bytes.NewBuffer([]byte{})
-	writer := NewWriter(slogt.New(t), buffer)
+	writer := NewWriter(klog.NewKlogr(), buffer)
 
 	t.Run("byte", func(t *testing.T) {
 		writer.AddByte(byte(types.ServerAuth))
@@ -105,7 +104,7 @@ func TestWriteTypesErr(t *testing.T) {
 	expected := errors.New("unexpected error")
 
 	buffer := bytes.NewBuffer([]byte{})
-	writer := NewWriter(slogt.New(t), buffer)
+	writer := NewWriter(klog.NewKlogr(), buffer)
 	writer.err = expected
 
 	t.Run("byte", func(t *testing.T) {

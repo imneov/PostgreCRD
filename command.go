@@ -5,14 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log/slog"
 	"net"
 	"strings"
 
-	"github.com/jeroenrinzema/psql-wire/codes"
-	psqlerr "github.com/jeroenrinzema/psql-wire/errors"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/codes"
+	psqlerr "github.com/imneov/PostgreCRD/errors"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 	"github.com/lib/pq/oid"
 )
 
@@ -37,7 +36,7 @@ func NewErrUnkownStatement(name string) error {
 // This method keeps consuming messages until the client issues a close message
 // or the connection is terminated.
 func (srv *Server) consumeCommands(ctx context.Context, conn net.Conn, reader *buffer.Reader, writer *buffer.Writer) (err error) {
-	srv.logger.Debug("ready for query... starting to consume commands")
+	srv.logger.V(9).Info("ready for query... starting to consume commands")
 
 	// TODO: Include a value to identify unique connections
 	//
@@ -76,7 +75,7 @@ func (srv *Server) consumeCommands(ctx context.Context, conn net.Conn, reader *b
 		// NOTE: we increase the wait group by one in order to make sure that idle
 		// connections are not blocking a close.
 		srv.wg.Add(1)
-		srv.logger.Debug("incoming command", slog.Int("length", length), slog.String("type", string(t)))
+		srv.logger.V(9).Info("incoming command", "length", length, "type", string(t))
 		err = srv.handleCommand(ctx, conn, t, reader, writer)
 		srv.wg.Done()
 		if errors.Is(err, io.EOF) {
@@ -224,7 +223,7 @@ func (srv *Server) handleSimpleQuery(ctx context.Context, reader *buffer.Reader,
 		return err
 	}
 
-	srv.logger.Debug("incoming simple query", slog.String("query", query))
+	srv.logger.V(9).Info("incoming simple query", "query", query)
 
 	// NOTE: If a completely empty (no contents other than whitespace) query
 	// string is received, the response is EmptyQueryResponse followed by
@@ -300,7 +299,7 @@ func (srv *Server) handleParse(ctx context.Context, reader *buffer.Reader, write
 		return ErrorCode(writer, err)
 	}
 
-	srv.logger.Debug("incoming extended query", slog.String("query", query), slog.String("name", name), slog.Int("parameters", len(params)))
+	srv.logger.V(9).Info("incoming extended query", "query", query, "name", name, "parameters", len(params))
 
 	err = srv.Statements.Set(ctx, name, statement, params, columns)
 	if err != nil {
@@ -419,7 +418,7 @@ func (srv *Server) readParameters(ctx context.Context, reader *buffer.Reader) ([
 		return nil, err
 	}
 
-	srv.logger.Debug("reading parameters format codes", slog.Uint64("length", uint64(length)))
+	srv.logger.V(9).Info("reading parameters format codes", "length", uint64(length))
 
 	for i := uint16(0); i < length; i++ {
 		format, err := reader.GetUint16()
@@ -447,7 +446,7 @@ func (srv *Server) readParameters(ctx context.Context, reader *buffer.Reader) ([
 		return nil, err
 	}
 
-	srv.logger.Debug("reading parameters values", slog.Uint64("length", uint64(length)))
+	srv.logger.V(9).Info("reading parameters values", "length", uint64(length))
 
 	parameters := make([]string, length)
 	for i := uint16(0); i < length; i++ {
@@ -461,7 +460,7 @@ func (srv *Server) readParameters(ctx context.Context, reader *buffer.Reader) ([
 			return nil, err
 		}
 
-		srv.logger.Debug("incoming parameter", slog.String("value", string(value)))
+		srv.logger.V(9).Info("incoming parameter", "value", string(value))
 		parameters[i] = string(value)
 	}
 
@@ -472,7 +471,7 @@ func (srv *Server) readParameters(ctx context.Context, reader *buffer.Reader) ([
 		return nil, err
 	}
 
-	srv.logger.Debug("reading result-column format codes", slog.Uint64("length", uint64(length)))
+	srv.logger.V(9).Info("reading result-column format codes", "length", uint64(length))
 
 	for i := uint16(0); i < length; i++ {
 		// TODO: Handle incoming result-column format codes
@@ -510,7 +509,7 @@ func (srv *Server) handleExecute(ctx context.Context, reader *buffer.Reader, wri
 		return err
 	}
 
-	srv.logger.Debug("executing", slog.String("name", name), slog.Uint64("limit", uint64(limit)))
+	srv.logger.V(9).Info("executing", "name", name, "limit", uint64(limit))
 	err = srv.Portals.Execute(ctx, name, writer)
 	if err != nil {
 		return ErrorCode(writer, err)

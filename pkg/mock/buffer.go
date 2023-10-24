@@ -4,14 +4,13 @@ import (
 	"io"
 	"testing"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
-	"github.com/neilotoole/slogt"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 // NewWriter constructs a new PostgreSQL wire protocol writer.
 func NewWriter(t *testing.T, writer io.Writer) *Writer {
-	return &Writer{buffer.NewWriter(slogt.New(t), writer)}
+	return &Writer{buffer.NewWriter(klog.NewKlogr(), writer)}
 }
 
 // Writer represents a low level PostgreSQL client writer allowing a user to
@@ -31,7 +30,7 @@ func (buffer *Writer) Start(t types.ClientMessage) {
 // NewReader constructs a new PostgreSQL wire protocol reader using the default
 // buffer size.
 func NewReader(t *testing.T, reader io.Reader) *Reader {
-	return &Reader{buffer.NewReader(slogt.New(t), reader, buffer.DefaultBufferSize)}
+	return &Reader{buffer.NewReader(klog.NewKlogr(), reader, buffer.DefaultBufferSize)}
 }
 
 // Reader represents a low level PostgreSQL client reader allowing a user to

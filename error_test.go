@@ -7,11 +7,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jackc/pgx/v5"
-	"github.com/jeroenrinzema/psql-wire/codes"
-	psqlerr "github.com/jeroenrinzema/psql-wire/errors"
+	"github.com/imneov/PostgreCRD/codes"
+	psqlerr "github.com/imneov/PostgreCRD/errors"
 	"github.com/lib/pq/oid"
-	"github.com/neilotoole/slogt"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,7 +21,7 @@ func TestErrorCode(t *testing.T) {
 		return statement, nil, nil, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	assert.NoError(t, err)
 
 	address := TListenAndServe(t, server)

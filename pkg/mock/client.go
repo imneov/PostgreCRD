@@ -5,7 +5,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 func NewClient(t *testing.T, conn net.Conn) *Client {

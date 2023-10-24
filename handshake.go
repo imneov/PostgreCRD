@@ -4,11 +4,10 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"log/slog"
 	"net"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 // Handshake performs the connection handshake and returns the connection
@@ -72,7 +71,7 @@ func readyForQuery(writer *buffer.Writer, status types.ServerStatus) error {
 func (srv *Server) readClientParameters(ctx context.Context, reader *buffer.Reader) (_ context.Context, err error) {
 	meta := make(Parameters)
 
-	srv.logger.Debug("reading client parameters")
+	srv.logger.V(9).Info("reading client parameters")
 
 	for {
 		key, err := reader.GetString()
@@ -90,7 +89,7 @@ func (srv *Server) readClientParameters(ctx context.Context, reader *buffer.Read
 			return nil, err
 		}
 
-		srv.logger.Debug("client parameter", slog.String("key", key), slog.String("value", value))
+		srv.logger.V(9).Info("client parameter", "key", key, "value", value)
 		meta[ParameterStatus(key)] = value
 	}
 
@@ -106,18 +105,20 @@ func (srv *Server) writeParameters(ctx context.Context, writer *buffer.Writer, p
 		params = make(Parameters, 4)
 	}
 
-	srv.logger.Debug("writing server parameters")
+	srv.logger.V(9).Info("writing server parameters")
 
 	params[ParamServerEncoding] = "UTF8"
 	params[ParamClientEncoding] = "UTF8"
+	params[ParamServerVersion] = "10.4"
 	if srv.Version != "" {
 		params[ParamServerVersion] = srv.Version
 	}
 	params[ParamIsSuperuser] = buffer.EncodeBoolean(IsSuperUser(ctx))
 	params[ParamSessionAuthorization] = AuthenticatedUsername(ctx)
+	params[ParamDateStyle] = "ISO, MDY"
 
 	for key, value := range params {
-		srv.logger.Debug("server parameter", slog.String("key", string(key)), slog.String("value", value))
+		srv.logger.V(9).Info("server parameter", "key", string(key), "value", value)
 
 		writer.Start(types.ServerParameterStatus)
 		writer.AddString(string(key))
@@ -141,10 +142,10 @@ func (srv *Server) potentialConnUpgrade(conn net.Conn, reader *buffer.Reader, ve
 		return conn, reader, version, nil
 	}
 
-	srv.logger.Debug("attempting to upgrade the client to a TLS connection")
+	srv.logger.V(9).Info("attempting to upgrade the client to a TLS connection")
 
 	if len(srv.Certificates) == 0 {
-		srv.logger.Debug("no TLS certificates available continuing with a insecure connection")
+		srv.logger.V(9).Info("no TLS certificates available continuing with a insecure connection")
 		return srv.sslUnsupported(conn, reader, version)
 	}
 
@@ -169,7 +170,7 @@ func (srv *Server) potentialConnUpgrade(conn net.Conn, reader *buffer.Reader, ve
 		return conn, reader, version, err
 	}
 
-	srv.logger.Debug("connection has been upgraded successfully")
+	srv.logger.V(9).Info("connection has been upgraded successfully")
 	return conn, reader, version, err
 }
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/jeroenrinzema/psql-wire/codes"
+	"github.com/imneov/PostgreCRD/codes"
 )
 
 // WithCode decorates the error with a Postgres error code

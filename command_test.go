@@ -6,17 +6,15 @@ import (
 	"net"
 	"testing"
 
-	"github.com/jackc/pgx/v5"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/mock"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/mock"
+	"github.com/imneov/PostgreCRD/pkg/types"
 	"github.com/lib/pq/oid"
-	"github.com/neilotoole/slogt"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMessageSizeExceeded(t *testing.T) {
-	server, err := NewServer(nil, Logger(slogt.New(t)))
+	server, err := NewServer(nil, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +80,7 @@ func TestBindMessageParameters(t *testing.T) {
 		return statement, ParseParameters(query), columns, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}

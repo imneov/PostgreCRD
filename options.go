@@ -4,13 +4,12 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"github.com/go-logr/logr"
 	"regexp"
 	"strconv"
 
-	"log/slog"
-
+	"github.com/imneov/PostgreCRD/pkg/buffer"
 	"github.com/jackc/pgtype"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
 	"github.com/lib/pq/oid"
 )
 
@@ -143,7 +142,7 @@ func GlobalParameters(params Parameters) OptionFn {
 }
 
 // Logger sets the given zap logger as the default logger for the given server.
-func Logger(logger *slog.Logger) OptionFn {
+func Logger(logger logr.Logger) OptionFn {
 	return func(srv *Server) error {
 		srv.logger = logger
 		return nil

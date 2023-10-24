@@ -1,9 +1,9 @@
 package wire
 
 import (
-	psqlerr "github.com/jeroenrinzema/psql-wire/errors"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	psqlerr "github.com/imneov/PostgreCRD/errors"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 // errFieldType represents the error fields.

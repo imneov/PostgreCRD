@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jeroenrinzema/psql-wire/codes"
-	pgerror "github.com/jeroenrinzema/psql-wire/errors"
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/codes"
+	pgerror "github.com/imneov/PostgreCRD/errors"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 // authType represents the manner in which a client is able to authenticate
@@ -30,7 +30,7 @@ type AuthStrategy func(ctx context.Context, writer *buffer.Writer, reader *buffe
 // the provided credentials are correct. When the provided credentials are invalid
 // or any unexpected error occures is an error returned and should the connection be closed.
 func (srv *Server) handleAuth(ctx context.Context, reader *buffer.Reader, writer *buffer.Writer) (context.Context, error) {
-	srv.logger.Debug("authenticating client connection")
+	srv.logger.V(9).Info("authenticating client connection")
 
 	if srv.Auth == nil {
 		// No authentication strategy configured.

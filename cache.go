@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/buffer"
+	"github.com/imneov/PostgreCRD/pkg/buffer"
 	"github.com/lib/pq/oid"
 )
 

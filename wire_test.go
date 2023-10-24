@@ -7,12 +7,10 @@ import (
 	"net"
 	"testing"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/imneov/PostgreCRD/pkg/mock"
 	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/jeroenrinzema/psql-wire/pkg/mock"
 	_ "github.com/lib/pq"
 	"github.com/lib/pq/oid"
-	"github.com/neilotoole/slogt"
 	"github.com/stretchr/testify/require"
 )
 
@@ -49,7 +47,7 @@ func TestClientConnect(t *testing.T) {
 		return statement, nil, nil, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,7 +128,7 @@ func TestClientParameters(t *testing.T) {
 		return statement, parameters, columns, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -221,7 +219,7 @@ func TestServerWritingResult(t *testing.T) {
 		return statement, parameters, columns, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -360,7 +358,7 @@ func TOpenMockServer(t *testing.T) *net.TCPAddr {
 		return statement, parameters, columns, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	require.NoError(t, err)
 	address := TListenAndServe(t, server)
 	return address
@@ -397,7 +395,7 @@ func TestServerNULLValues(t *testing.T) {
 		return statement, parameters, columns, nil
 	}
 
-	server, err := NewServer(handler, Logger(slogt.New(t)))
+	server, err := NewServer(handler, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,16 +1,17 @@
-module github.com/jeroenrinzema/psql-wire
+module github.com/imneov/PostgreCRD
 
-go 1.21
+go 1.20
 
 require (
+	github.com/go-logr/logr v1.2.4
 	github.com/golangci/golangci-lint v1.54.2
 	github.com/jackc/pgtype v1.8.1
 	github.com/jackc/pgx/v5 v5.0.3
 	github.com/lib/pq v1.10.9
-	github.com/neilotoole/slogt v1.1.0
 	github.com/shopspring/decimal v1.2.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/tools v0.12.0
+	k8s.io/klog/v2 v2.100.1
 )
 
 require (

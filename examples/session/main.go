@@ -6,18 +6,18 @@ import (
 	"log"
 	"sync"
 
-	wire "github.com/jeroenrinzema/psql-wire"
+	wire "github.com/imneov/PostgreCRD"
 	"github.com/lib/pq/oid"
 )
 
 func main() {
-	srv, err := wire.NewServer(handler, wire.Session(session))
+	srv, err := wire.NewServer(handler, wire.Session(session), wire.Version("10.4"))
 	if err != nil {
 		panic(err)
 	}
 
 	log.Println("PostgreSQL server is up and running at [127.0.0.1:5432]")
-	srv.ListenAndServe("127.0.0.1:5432")
+	srv.ListenAndServe("127.0.0.1:15432")
 }
 
 type key int
@@ -31,6 +31,16 @@ func session(ctx context.Context) (context.Context, error) {
 	counter++
 	defer mu.Unlock()
 	return context.WithValue(ctx, id, counter), nil
+}
+
+var table = wire.Columns{
+	{
+		Table:  0,
+		Name:   "account_balance",
+		Oid:    oid.T_numeric,
+		Width:  1,
+		Format: wire.TextFormat,
+	},
 }
 
 func handler(ctx context.Context, query string) (wire.PreparedStatementFn, []oid.Oid, wire.Columns, error) {

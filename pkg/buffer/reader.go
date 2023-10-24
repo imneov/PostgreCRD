@@ -4,11 +4,11 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/binary"
+	"github.com/go-logr/logr"
 	"io"
-	"log/slog"
 	"unsafe"
 
-	"github.com/jeroenrinzema/psql-wire/pkg/types"
+	"github.com/imneov/PostgreCRD/pkg/types"
 )
 
 // DefaultBufferSize represents the default buffer size whenever the buffer size
@@ -24,7 +24,7 @@ type BufferedReader interface {
 
 // Reader provides a convenient way to read pgwire protocol messages
 type Reader struct {
-	logger         *slog.Logger
+	logger         logr.Logger
 	Buffer         BufferedReader
 	Msg            []byte
 	MaxMessageSize int
@@ -32,7 +32,7 @@ type Reader struct {
 }
 
 // NewReader constructs a new Postgres wire buffer for the given io.Reader
-func NewReader(logger *slog.Logger, reader io.Reader, bufferSize int) *Reader {
+func NewReader(logger logr.Logger, reader io.Reader, bufferSize int) *Reader {
 	if reader == nil {
 		return nil
 	}

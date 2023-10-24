@@ -5,9 +5,9 @@ import (
 	"errors"
 	"log"
 
-	wire "github.com/jeroenrinzema/psql-wire"
-	"github.com/jeroenrinzema/psql-wire/codes"
-	psqlerr "github.com/jeroenrinzema/psql-wire/errors"
+	wire "github.com/imneov/PostgreCRD"
+	"github.com/imneov/PostgreCRD/codes"
+	psqlerr "github.com/imneov/PostgreCRD/errors"
 	"github.com/lib/pq/oid"
 )
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/jeroenrinzema/psql-wire/codes"
-	psqlerr "github.com/jeroenrinzema/psql-wire/errors"
+	"github.com/imneov/PostgreCRD/codes"
+	psqlerr "github.com/imneov/PostgreCRD/errors"
 )
 
 // ErrMissingNulTerminator is thrown when no NUL terminator is found when
