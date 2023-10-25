@@ -3,6 +3,8 @@ package wire
 import (
 	"context"
 	"fmt"
+	"github.com/jackc/pgx/v5"
+	"k8s.io/klog/v2"
 	"net"
 	"testing"
 
@@ -14,7 +16,7 @@ import (
 )
 
 func TestMessageSizeExceeded(t *testing.T) {
-	server, err := NewServer(nil, Logger(klog.NewKlogr()))
+	var server, err = NewServer(nil, Logger(klog.NewKlogr()))
 	if err != nil {
 		t.Fatal(err)
 	}

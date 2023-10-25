@@ -3,7 +3,8 @@
 [![CI](https://github.com/imneov/PostgreCRD/actions/workflows/build.yaml/badge.svg)](https://github.com/imneov/PostgreCRD/actions/workflows/build.yaml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/imneov/PostgreCRD.svg)](https://pkg.go.dev/github.com/imneov/PostgreCRD) [![Latest release](https://img.shields.io/github/release/jeroenrinzema/psql-wire.svg)](https://github.com/imneov/PostgreCRD/releases) [![Go Report Card](https://goreportcard.com/badge/github.com/imneov/PostgreCRD)](https://goreportcard.com/report/github.com/imneov/PostgreCRD)
 
-**Note**: this work is a fork of [jeroenrinzema/psql-wire](https://github.com/jeroenrinzema/psql-wire).
+**Note**: this work is a fork of [jeroenrinzema/psql-wire](https://github.
+com/jeroenrinzema/psql-wire).
 
 A pure Go [PostgreSQL](https://www.postgresql.org/) server wire protocol implementation.
 Build your own PostgreSQL server within a few lines of code.

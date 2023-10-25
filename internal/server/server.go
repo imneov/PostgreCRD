@@ -1,10 +1,10 @@
-package main
+package server
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	wire "github.com/imneov/PostgreCRD"
+	"github.com/imneov/PostgreCRD/internal/config"
 	"github.com/jackc/pgtype"
 	shopspring "github.com/jackc/pgtype/ext/shopspring-numeric"
 	"github.com/lib/pq/oid"
@@ -21,10 +21,24 @@ var (
 	data    [][]any
 )
 
-func main() {
-	klog.InitFlags(nil)
-	flag.Parse()
+type Server interface {
+	Run()
+}
 
+type server struct {
+	cfg      *config.Config
+	database *database
+}
+
+func NewServer(cfg *config.Config) Server {
+	database := NewDatabase(cfg)
+	return &server{
+		database: database,
+		cfg:      cfg,
+	}
+}
+
+func (s *server) Run() {
 	types := wire.ExtendTypes(func(info *pgtype.ConnInfo) {
 		info.RegisterDataType(pgtype.DataType{
 			Value: &shopspring.Numeric{},
@@ -33,7 +47,7 @@ func main() {
 		})
 	})
 
-	srv, err := wire.NewServer(handler, types, wire.Version("10.4"))
+	srv, err := wire.NewServer(s.handler, types, wire.Version("10.4"))
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +86,7 @@ var table = wire.Columns{
 		Format: wire.TextFormat,
 	},
 	{
-		Table:  0,
+		Table:  1,
 		Name:   "age",
 		Oid:    oid.T_int4,
 		Width:  1,
@@ -80,8 +94,8 @@ var table = wire.Columns{
 	},
 }
 
-func handler(ctx context.Context, query string) (wire.PreparedStatementFn, []oid.Oid, wire.Columns, error) {
-	log.Println("incoming SQL query:", query)
+func (s *server) handler(ctx context.Context, query string) (wire.PreparedStatementFn, []oid.Oid, wire.Columns, error) {
+	klog.V(7).Info("handler incoming SQL query:", query)
 
 	if query == "BEGIN" {
 		statement := func(ctx context.Context, writer wire.DataWriter, parameters []string) error {
@@ -120,6 +134,14 @@ func handler(ctx context.Context, query string) (wire.PreparedStatementFn, []oid
 	if strings.Index(query, "COMMIT") != -1 {
 		statement := func(ctx context.Context, writer wire.DataWriter, parameters []string) error {
 			return writer.Complete(query)
+		}
+
+		return statement, wire.ParseParameters(query), nil, nil
+	}
+
+	if strings.ToLower(query) == "select version()" {
+		statement := func(ctx context.Context, writer wire.DataWriter, parameters []string) error {
+			return writer.Complete("10.4")
 		}
 
 		return statement, wire.ParseParameters(query), nil, nil

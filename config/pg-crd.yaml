@@ -1,0 +1,117 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    crd-gen.kubecphere.io/version: v0.1.0
+  name: instances.db.pitrix.qingcloud.com
+spec:
+  group: db.pitrix.qingcloud.com
+  names:
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: {'schema': 'public', 'table': 'instance', 'columns': [{'name': 'instance_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_name', 'nullable': True, 'type': 'text'}, {'name': 'description', 'nullable': True, 'type': 'text'}, {'name': 'hostname', 'nullable': True, 'type': 'varchar'}, {'name': 'image_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_type', 'nullable': False, 'type': 'varchar'}, {'name': 'vcpus_max', 'nullable': False, 'type': 'integer'}, {'name': 'vcpus_current', 'nullable': False, 'type': 'integer'}, {'name': 'cpu_topology', 'nullable': False, 'type': 'varchar'}, {'name': 'memory_max', 'nullable': False, 'type': 'integer'}, {'name': 'memory_current', 'nullable': False, 'type': 'integer'}, {'name': 'graphics_protocol', 'nullable': False, 'type': 'varchar'}, {'name': 'graphics_passwd', 'nullable': True, 'type': 'varchar'}, {'name': 'graphics_port', 'nullable': True, 'type': 'varchar'}, {'name': 'broker_host', 'nullable': True, 'type': 'varchar'}, {'name': 'broker_port', 'nullable': True, 'type': 'varchar'}, {'name': 'status', 'nullable': False, 'type': 'varchar'}, {'name': 'sub_code', 'nullable': False, 'type': 'integer'}, {'name': 'transition_status', 'nullable': False, 'type': 'varchar'}, {'name': 'host_machine', 'nullable': True, 'type': 'varchar'}, {'name': 'controller', 'nullable': False, 'type': 'varchar'}, {'name': 'create_time', 'nullable': False, 'type': 'timestamp'}, {'name': 'status_time', 'nullable': False, 'type': 'timestamp'}, {'name': 'console_id', 'nullable': False, 'type': 'varchar'}, {'name': 'owner', 'nullable': False, 'type': 'varchar'}, {'name': 'root_user_id', 'nullable': False, 'type': 'varchar'}, {'name': 'place_group_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_class', 'nullable': False, 'type': 'integer'}, {'name': 'platform', 'nullable': True, 'type': 'varchar'}, {'name': 'zone_id', 'nullable': False, 'type': 'varchar'}], 'primary_key': ['instance_id'], 'foreign_keys': [], 'unique_constraints': []}
+            type: object
+            properties:
+              instanceId:
+                type: string
+              instanceName:
+                type: string
+              description:
+                type: string
+              hostname:
+                type: string
+              imageId:
+                type: string
+              instanceType:
+                type: string
+              vcpusMax:
+                type: integer
+              vcpusCurrent:
+                type: integer
+              cpuTopology:
+                type: string
+              memoryMax:
+                type: integer
+              memoryCurrent:
+                type: integer
+              graphicsProtocol:
+                type: string
+              graphicsPasswd:
+                type: string
+              graphicsPort:
+                type: string
+              brokerHost:
+                type: string
+              brokerPort:
+                type: string
+              status:
+                type: string
+              subCode:
+                type: integer
+              transitionStatus:
+                type: string
+              hostMachine:
+                type: string
+              controller:
+                type: string
+              createTime:
+                type: string
+                format: date-time
+              statusTime:
+                type: string
+                format: date-time
+              consoleId:
+                type: string
+              owner:
+                type: string
+              rootUserId:
+                type: string
+              placeGroupId:
+                type: string
+              instanceClass:
+                type: integer
+              platform:
+                type: string
+              zoneId:
+                type: string
+          status:
+            description: status
+            properties:
+              status:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                  of cluster Important: Run "make" to regenerate code after modifying
+                  this file'
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

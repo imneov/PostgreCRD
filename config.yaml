@@ -1,0 +1,132 @@
+databases:
+  - pgserver:
+      database: aaaaa
+    tablemapping:
+      #{'schema': 'public', 'table': 'instance', 'columns': [{'name': 'instance_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_name', 'nullable': True, 'type': 'text'}, {'name': 'description', 'nullable': True, 'type': 'text'}, {'name': 'hostname', 'nullable': True, 'type': 'varchar'}, {'name': 'image_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_type', 'nullable': False, 'type': 'varchar'}, {'name': 'vcpus_max', 'nullable': False, 'type': 'integer'}, {'name': 'vcpus_current', 'nullable': False, 'type': 'integer'}, {'name': 'cpu_topology', 'nullable': False, 'type': 'varchar'}, {'name': 'memory_max', 'nullable': False, 'type': 'integer'}, {'name': 'memory_current', 'nullable': False, 'type': 'integer'}, {'name': 'graphics_protocol', 'nullable': False, 'type': 'varchar'}, {'name': 'graphics_passwd', 'nullable': True, 'type': 'varchar'}, {'name': 'graphics_port', 'nullable': True, 'type': 'varchar'}, {'name': 'broker_host', 'nullable': True, 'type': 'varchar'}, {'name': 'broker_port', 'nullable': True, 'type': 'varchar'}, {'name': 'status', 'nullable': False, 'type': 'varchar'}, {'name': 'sub_code', 'nullable': False, 'type': 'integer'}, {'name': 'transition_status', 'nullable': False, 'type': 'varchar'}, {'name': 'host_machine', 'nullable': True, 'type': 'varchar'}, {'name': 'controller', 'nullable': False, 'type': 'varchar'}, {'name': 'create_time', 'nullable': False, 'type': 'timestamp'}, {'name': 'status_time', 'nullable': False, 'type': 'timestamp'}, {'name': 'console_id', 'nullable': False, 'type': 'varchar'}, {'name': 'owner', 'nullable': False, 'type': 'varchar'}, {'name': 'root_user_id', 'nullable': False, 'type': 'varchar'}, {'name': 'place_group_id', 'nullable': False, 'type': 'varchar'}, {'name': 'instance_class', 'nullable': False, 'type': 'integer'}, {'name': 'platform', 'nullable': True, 'type': 'varchar'}, {'name': 'zone_id', 'nullable': False, 'type': 'varchar'}], 'primary_key': ['instance_id'], 'foreign_keys': [], 'unique_constraints': []}
+      instance:
+        type: ResourceTable
+        CRD:
+          group: db.pitrix.qingcloud.com
+          kind: Instance
+          version: v1alpha1
+        rules:
+          instance_id:
+            source: spec.instanceId
+            type: varchar
+            nullable: False
+          instance_name:
+            source: spec.instanceName
+            type: text
+            nullable: True
+          description:
+            source: spec.description
+            type: text
+            nullable: True
+          hostname:
+            source: spec.hostname
+            type: varchar
+            nullable: True
+          image_id:
+            source: spec.imageId
+            type: varchar
+            nullable: False
+          instance_type:
+            source: spec.instanceType
+            type: varchar
+            nullable: False
+          vcpus_max:
+            source: spec.vcpusMax
+            type: integer
+            nullable: False
+          vcpus_current:
+            source: spec.vcpusCurrent
+            type: integer
+            nullable: False
+          cpu_topology:
+            source: spec.cpuTopology
+            type: varchar
+            nullable: False
+          memory_max:
+            source: spec.memoryMax
+            type: integer
+            nullable: False
+          memory_current:
+            source: spec.memoryCurrent
+            type: integer
+            nullable: False
+          graphics_protocol:
+            source: spec.graphicsProtocol
+            type: varchar
+            nullable: False
+          graphics_passwd:
+            source: spec.graphicsPasswd
+            type: varchar
+            nullable: True
+          graphics_port:
+            source: spec.graphicsPort
+            type: varchar
+            nullable: True
+          broker_host:
+            source: spec.brokerHost
+            type: varchar
+            nullable: True
+          broker_port:
+            source: spec.brokerPort
+            type: varchar
+            nullable: True
+          status:
+            source: spec.status
+            type: varchar
+            nullable: False
+          sub_code:
+            source: spec.subCode
+            type: integer
+            nullable: False
+          transition_status:
+            source: spec.transitionStatus
+            type: varchar
+            nullable: False
+          host_machine:
+            source: spec.hostMachine
+            type: varchar
+            nullable: True
+          controller:
+            source: spec.controller
+            type: varchar
+            nullable: False
+          create_time:
+            source: spec.createTime
+            type: timestamp
+            nullable: False
+          status_time:
+            source: spec.statusTime
+            type: timestamp
+            nullable: False
+          console_id:
+            source: spec.consoleId
+            type: varchar
+            nullable: False
+          owner:
+            source: spec.owner
+            type: varchar
+            nullable: False
+          root_user_id:
+            source: spec.rootUserId
+            type: varchar
+            nullable: False
+          place_group_id:
+            source: spec.placeGroupId
+            type: varchar
+            nullable: False
+          instance_class:
+            source: spec.instanceClass
+            type: integer
+            nullable: False
+          platform:
+            source: spec.platform
+            type: varchar
+            nullable: True
+          zone_id:
+            source: spec.zoneId
+            type: varchar
+            nullable: False

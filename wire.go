@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"github.com/go-logr/logr"
+	"k8s.io/klog/v2"
 	"net"
 	"sync"
 	"sync/atomic"

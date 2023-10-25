@@ -3,14 +3,32 @@ module github.com/imneov/PostgreCRD
 go 1.20
 
 require (
+	github.com/Jeffail/gabs v1.4.0
+	github.com/a8m/djson v0.0.0-20170509170705-c02c5aef757f
+	github.com/antlr/antlr4/runtime/Go/antlr v1.4.10
+	github.com/antonholmquist/jason v1.0.0
+	github.com/bitly/go-simplejson v0.5.1
+	github.com/buger/jsonparser v1.1.1
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
 	github.com/go-logr/logr v1.2.4
 	github.com/golangci/golangci-lint v1.54.2
 	github.com/jackc/pgtype v1.8.1
 	github.com/jackc/pgx/v5 v5.0.3
 	github.com/lib/pq v1.10.9
+	github.com/mailru/easyjson v0.7.7
+	github.com/mreiferson/go-ujson v0.0.0-20200614021406-c02629f4935e
+	github.com/olekukonko/tablewriter v0.0.5
+	github.com/petar/GoLLRB v0.0.0-20210522233825-ae3b015fd3e9
+	github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7
 	github.com/shopspring/decimal v1.2.0
+	github.com/smartystreets/goconvey v1.7.2
+	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.4
+	github.com/tidwall/match v1.1.1
+	github.com/tidwall/pretty v1.2.1
+	github.com/tkeel-io/tdtl v0.1.4
 	golang.org/x/tools v0.12.0
+	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/klog/v2 v2.100.1
 )
 
@@ -76,6 +94,7 @@ require (
 	github.com/golangci/revgrep v0.0.0-20220804021717-745bb2f7c2e6 // indirect
 	github.com/golangci/unconvert v0.0.0-20180507085042-28b1c447d1f4 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/gordonklaus/ineffassign v0.0.0-20230610083614-0e73809eb601 // indirect
 	github.com/gostaticanalysis/analysisutil v0.7.1 // indirect
 	github.com/gostaticanalysis/comment v1.4.2 // indirect
@@ -93,6 +112,8 @@ require (
 	github.com/jgautheron/goconst v1.5.1 // indirect
 	github.com/jingyugao/rowserrcheck v1.1.1 // indirect
 	github.com/jirfag/go-printf-func-name v0.0.0-20200119135958-7558a9eaa5af // indirect
+	github.com/josharian/intern v1.0.0 // indirect
+	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/julz/importas v0.1.0 // indirect
 	github.com/kisielk/errcheck v1.6.3 // indirect
 	github.com/kisielk/gotool v1.0.0 // indirect
@@ -121,7 +142,6 @@ require (
 	github.com/nishanths/exhaustive v0.11.0 // indirect
 	github.com/nishanths/predeclared v0.2.2 // indirect
 	github.com/nunnatsa/ginkgolinter v0.13.5 // indirect
-	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/polyfloyd/go-errorlint v1.4.4 // indirect
@@ -145,6 +165,7 @@ require (
 	github.com/sivchari/containedctx v1.0.3 // indirect
 	github.com/sivchari/nosnakecase v1.7.0 // indirect
 	github.com/sivchari/tenv v1.7.1 // indirect
+	github.com/smartystreets/assertions v1.2.0 // indirect
 	github.com/sonatard/noctx v0.0.2 // indirect
 	github.com/sourcegraph/go-diff v0.7.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
@@ -152,7 +173,6 @@ require (
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.15.0 // indirect
 	github.com/ssgreg/nlreturn/v2 v2.2.1 // indirect
 	github.com/stbenjam/no-sprintf-host-port v0.1.1 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
@@ -185,7 +205,6 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.4.5 // indirect
 	mvdan.cc/gofumpt v0.5.0 // indirect
 	mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed // indirect
